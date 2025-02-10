@@ -1,0 +1,32 @@
+% Real-time Signal Analyzer in MATLAB
+
+fs = 500; % Sampling frequency (Hz)
+buffer_size = fs * 5; % 5-second buffer
+data_buffer = zeros(buffer_size, 1);
+
+% Bandpass filter design (1-50 Hz)
+lowcut = 1;
+highcut = 50;
+[b, a] = butter(4, [lowcut, highcut] / (fs / 2), 'bandpass');
+
+% Real-time data acquisition and visualization
+figure;
+hold on;
+title('Real-time Signal Processing');
+xlabel('Time (samples)');
+ylabel('Amplitude');
+
+while true
+    % Simulated real-time data input (replace with actual acquisition)
+    new_data = randn(1) * 0.1; % Simulated noise signal
+    data_buffer = [data_buffer(2:end); new_data];
+    
+    % Apply bandpass filter
+    filtered_data = filtfilt(b, a, data_buffer);
+    
+    % Update plot
+    clf;
+    plot(filtered_data);
+    ylim([-1, 1]);
+    pause(0.05);
+end
